@@ -1,0 +1,64 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- build:js js/vendor/modernizr.js -->
+        <script src="components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+
+        <div id="tools">
+            <div id="hover-outline" class="mOutLines">
+                <div class="tagname">DIV</div>
+            </div>
+            <div id="selected-outline" class="mOutLines">
+                <div class="tagname">DIV</div>
+            </div>
+            <div id="padding-overlay">
+                <div class="pad-ov pad-top"></div>
+                <div class="pad-ov pad-bottom"></div>
+                <div class="pad-ov pad-left"></div>
+                <div class="pad-ov pad-right"></div>
+                <div class="pad-inner"></div>
+            </div>
+            <div id="margin-overlay">
+                <div class="margin-ov margin-top"></div>
+                <div class="margin-ov margin-bottom"></div>
+                <div class="margin-ov margin-left"></div>
+                <div class="margin-ov margin-right"></div>
+            </div>
+        </div>
+        <iframe src="empty.html" id="workspace" frameborder="0"></iframe>
+
+
+        <div id="element">
+            sca
+        </div>
+
+        <div id="attributes-editor">
+            <div class="form-group">
+                <label for="margin">Margin</label>
+                <input type="number" name="" id="margin" placeholder="Auto">
+            </div>
+            <div class="form-group">
+                <label for="padding">Padding</label>
+                <input type="number" name="" id="padding" min=0 placeholder="Auto">
+            </div>
+        </div>
+
+        <!-- build:js js/main.js -->
+        <script src="components/jquery/jquery.min.js"></script>
+        <script src="js/script.js"></script>
+        <!-- endbuild -->
+</body>
+</html>

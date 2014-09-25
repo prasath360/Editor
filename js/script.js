@@ -69,7 +69,7 @@ BZS.app.tools.paddingOverlay = (function () {
 	var $element = $('#padding-overlay');
 	return {
 		show : function (clientRect , padding) {
-			
+
 			var $padTop = $element.find('.pad-top');
 			var $padBottom = $element.find('.pad-bottom');
 			var $padLeft = $element.find('.pad-left');
@@ -88,12 +88,20 @@ BZS.app.tools.paddingOverlay = (function () {
 
 			if(padding.top){
 				$padTop.height(padding.top);
+				$padTop.css({
+					left : padding.left,
+					right : padding.right
+				});
 			} else {
 				$padTop.height(0);
 				$padInner.css('borderTop', 'none');
 			}
 			if(padding.bottom){
 				$padBottom.height(padding.bottom);
+				$padBottom.css({
+					left : padding.left,
+					right : padding.right
+				});
 			} else {
 				$padBottom.height(0);
 				$padInner.css('borderBottom', 'none');
@@ -130,7 +138,7 @@ BZS.app.tools.marginOverlay = (function () {
 	var $element = $('#margin-overlay');
 	return {
 		show : function (clientRect , margin) {
-			
+
 			var $marginTop = $element.find('.margin-top');
 			var $marginBottom = $element.find('.margin-bottom');
 			var $marginLeft = $element.find('.margin-left');
@@ -153,12 +161,20 @@ BZS.app.tools.marginOverlay = (function () {
 
 			if(margin.top){
 				$marginTop.height(margin.top-1);
+				$marginTop.css({
+					left : margin.left -1 ,
+					right : margin.right-1
+				})
 			} else {
 				$marginTop.height(0);
 				$element.css('borderTop', 'none');
 			}
 			if(margin.bottom){
 				$marginBottom.height(margin.bottom-1);
+				$marginBottom.css({
+					left : margin.left-1,
+					right : margin.right-1
+				});
 			} else {
 				$marginBottom.height(0);
 				$element.css('borderBottom', 'none');
@@ -198,12 +214,13 @@ BZS.app.tools.marginOverlay = (function () {
 			if(selectedElement){
 				var $this = selectedElement;
 				$this.addClass('bzs-affected');
-				
+
 				var rect = selectedElement.get(0).getBoundingClientRect();
 				BZS.app.tools.selectOutline.show(rect);
-				BZS.app.tools.hoverOutline.hide();
-				BZS.app.tools.paddingOverlay.hide();
 			}
+			BZS.app.tools.hoverOutline.hide();
+			BZS.app.tools.paddingOverlay.hide();
+			BZS.app.tools.marginOverlay.hide();
 		});
 
 
@@ -215,10 +232,11 @@ BZS.app.tools.marginOverlay = (function () {
 
 			selectedElement = $this;
 			$this.addClass('bzs-affected');
-			
+
 			var rect = this.getBoundingClientRect();
 			BZS.app.tools.hoverOutline.hide();
 			BZS.app.tools.paddingOverlay.hide();
+			BZS.app.tools.marginOverlay.hide();
 			BZS.app.tools.selectOutline.show(rect,this.tagName);
 		});
 
@@ -237,13 +255,8 @@ BZS.app.tools.marginOverlay = (function () {
 				var marginBox = $this.getMarginBox();
 				BZS.app.tools.paddingOverlay.show(rect,paddingBox);
 				BZS.app.tools.marginOverlay.show(rect,marginBox);
-				/*
-
-					$hoverOutline.addClass('bottom-label');
-					$hoverOutline.find('.tagname').html($this.prop('tagName'));
-				*/
 			}
-			
+
 		});
 
 		workingDocument.on('mouseout', controllsSlector, function(e) {
@@ -251,6 +264,7 @@ BZS.app.tools.marginOverlay = (function () {
 			e.stopPropagation();
 			BZS.app.tools.hoverOutline.hide();
 			BZS.app.tools.paddingOverlay.hide();
+			BZS.app.tools.marginOverlay.hide();
 		});
 
 	});

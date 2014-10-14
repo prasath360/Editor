@@ -206,6 +206,7 @@ BZS.app.tools.marginOverlay = (function () {
 	var controllsSlector = '.editor-mode *:not([data-bzs-ignore])';
 	var workingDocument = null;
 	var selectedElement = null;
+	var dragging = false;
 
 	$('#workspace').on('load', function () {
 		workingDocument = $('#workspace').contents();
@@ -243,8 +244,11 @@ BZS.app.tools.marginOverlay = (function () {
 		workingDocument.on('mouseover', controllsSlector , function(e) {
 			e.preventDefault();
 			e.stopPropagation();
-			var $this = $(this);
 
+			if(dragging)
+				return !dragging;
+
+			var $this = $(this);
 			if($this.hasClass('bzs-affected')){
 				BZS.app.tools.hoverOutline.hide();
 				BZS.app.tools.paddingOverlay.hide();
@@ -265,6 +269,67 @@ BZS.app.tools.marginOverlay = (function () {
 			BZS.app.tools.hoverOutline.hide();
 			BZS.app.tools.paddingOverlay.hide();
 			BZS.app.tools.marginOverlay.hide();
+		});
+
+		var dragStatus = {};
+
+		var onDrag = function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			dragging = true;
+			if(!(e.altKey || e.ctrlKey)) {
+				var newCss = {
+					marginTop : dragStatus.start.margin.top,
+					marginLeft : dragStatus.start.margin.left,
+				}
+				dragStatus.el.css(newCss);
+				return false;
+			}
+			var distance = {
+				x : e.clientX - dragStatus.start.x,
+				y : e.clientY - dragStatus.start.y
+			};
+			var newCss = {
+				marginTop : dragStatus.start.margin.top,
+				marginLeft : dragStatus.start.margin.left
+			};
+			if(e.altKey) {
+				newCss.marginTop += distance.y;
+			}
+			if(e.ctrlKey) {
+				newCss.marginLeft += distance.x;
+			}
+			dragStatus.el.css(newCss);
+			var rect = dragStatus.el.get(0).getBoundingClientRect();
+			var marginBox = dragStatus.el.getMarginBox();
+			BZS.app.tools.marginOverlay.show(rect,marginBox);
+			BZS.app.tools.selectOutline.show(rect,dragStatus.el.get(0).tagName);
+		};
+
+		var onDragEnd = function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			dragging = false;
+			workingDocument.off('mousemove', onDrag);
+			workingDocument.off('mouseup', onDragEnd);
+		};
+
+		workingDocument.on('mousedown', controllsSlector , function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			var $this = $(this);
+
+			dragStatus.start = {
+				x : e.clientX,
+				y : e.clientY,
+				margin : $this.getMarginBox()
+			};
+			dragStatus.el = $this;
+			BZS.app.tools.hoverOutline.hide();
+			BZS.app.tools.paddingOverlay.hide();
+			workingDocument.on('mousemove', onDrag);
+			workingDocument.on('mouseup', onDragEnd);
 		});
 
 	});
